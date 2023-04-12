@@ -11,6 +11,6 @@ if(isset($_POST['e_id']) AND ($_POST['c_id'])  AND ($_POST['v_id']))
     echo "Success";
 }
 
-// This Is
+// This Is New Comments.
 
 ?>
