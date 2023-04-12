@@ -6,6 +6,17 @@ if(isset($_GET['added']))
 <div class="alert alert-success my-3" role="alert">
   ******Candidate has been added Successfully.******
 </div>
+<?php
+}else if(isset($_GET['delete_id']))
+{
+    $Delete_id = $_GET['delete_id'];
+    mysqli_query($con, "DELETE FROM candidate_details WHERE id = '". $Delete_id."'")
+    or die(mysqli_error($con));
+    ?>
+<div class="alert alert-danger my-3" role="alert">
+  ******Candidate has been Deleted Successfully.******
+</div>
+
 
 
 <?php
@@ -127,6 +138,8 @@ if(isset($_GET['added']))
                             $sno = 1;
                                 while($row = mysqli_fetch_assoc($FetchData))
                                 {
+                                   
+
                                     $Election_id = $row['election_id'];
                                     $fetchingElectionName = mysqli_query($con, "SELECT * FROM elections WHERE id ='". $Election_id."'") or
                                     die(mysqli_error($con));
@@ -134,6 +147,7 @@ if(isset($_GET['added']))
                                     $election_name = $execFetchingElectionNameQuery['Election_Topic'];
                                     $candidate_photo = $row['Candidate_Photo'];
                                     
+                                    $Candidate_id = $row['id'];
                                     ?>
                                     <tr>
                                         <td><?php echo $sno++; ?></td>
@@ -147,8 +161,10 @@ if(isset($_GET['added']))
 
                                         
                                         <td>
-                                            <a href="#" class="btn btn-sm btn-warning"> Edit </a>
-                                            <a href="#" class="btn btn-sm btn-danger"> Delete </a>
+                                            <a href="updatecandidate.php?updateid=<?= $row['id'] ?>" class="btn btn-sm btn-warning"> Edit </a>
+                                            <!-- <a href="#" class="btn btn-sm btn-danger"> Delete </a> -->
+                                            <button class="btn btn-sm btn-danger" onclick="DeleteData(<?php echo 
+                                            $Candidate_id;?>)"> Delete </button>
 
                                         </td>
 
@@ -176,6 +192,23 @@ if(isset($_GET['added']))
         </table>
     </div>
 </div>
+
+<script>
+    const DeleteData = (c_id) =>
+
+    {
+        let c = confirm("Do You Really want to Delete it?");
+
+        if(c == true)
+        {
+            //alert("Data Deleted Successfully!!!");
+            location.assign("index.php?AddCandidatesPage=1&delete_id=" + c_id );
+           
+
+        }
+        //alert(e_id);
+    }
+</script>
 
 
 <?php
